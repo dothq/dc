@@ -12,6 +12,7 @@ const commandExists = require('command-exists').sync;
 
 const git = require('isomorphic-git')
 const hg = require("hg");
+const { exec } = require('child_process');
 
 program.version('1.0.0');
 
@@ -47,11 +48,25 @@ const fancyTime = (duration) => {
   return hours + ":" + minutes + ":" + seconds;
 }
 
+const runShell = (cmd) => {
+  const exec = require('child_process').exec;
+
+  return new Promise((resolve, reject) => {
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.warn(error);
+      }
+
+      resolve(stdout ? stdout : stderr);
+    });
+  });
+}
+
 program
   .command('fetch <hgProject> <gitProject>')
   .description('fetch a project')
   .action((hgProject, gitProject, sw) => {
-    const t = Date.now();
+    var t = Date.now();
 
     log("INFO", `Checking if Mercurial is installed on your system...`, true)
     const mercurialInstalled = commandExists("hg");
@@ -106,7 +121,7 @@ program
     var failed = false;
     var done = false;
 
-    hg.clone(hgProject, dir, (e, out) => {      
+    hg.clone(hgProject, dir, async (e, out) => {      
       if(e) {
         done = true;
         failed = true;
@@ -118,8 +133,37 @@ program
 
       if(!failed && out) {
         done = true;
-        log("SUCCESS", `Cloned mercurial repository \`${repo.join("/")}\` in \`${fancyTime(Date.now() - t)}s\``, true, true)
-        return clearInterval(int)
+        log("SUCCESS", `Cloned mercurial repository \`${repo.join("/")}\` in \`${fancyTime(Date.now() - t)}s\`.`, true, true)
+        clearInterval(int)
+
+        int = null;
+        
+        await runShell(`cd ${repo.join("/")} && git init && git remote add origin ${gitProject} && git remote -v`).then(o => {
+          if(o.includes(gitProject)) log("SUCCESS", `Added \`${gitRepo.join("/")}\` remote to \`${repo.join("/")}\` Mercurial repository.`, false, true)
+          else return log("WARN", `Something might've gone wrong.\n` + o, false, true)
+        })
+
+        nt = Date.now();
+
+        console.log("\n");
+        log("PROCESS", `Fetching files for git repository \`${gitRepo.join("/")}\` located at \`${gitProject.split("://")[1].split("/").shift()}\`, this may take a while...`, false, false)
+    
+        var fetchInt = setInterval(() => {
+          log("INFO", `[${fancyTime(Date.now() - nt)}] Fetching files at \`${gitRepo.join("/")}\` remote...`, true)
+        }, 1000)
+
+        await runShell(`cd ${repo.join("/")} && git fetch --all && git reset --hard origin/master`).then(o => {
+          clearInterval(fetchInt)
+
+          if(o.includes("HEAD is now at")) {
+            const currentState = o.split("HEAD is now at ")[1].split("\n")[0];
+
+            log("SUCCESS", `Fetched files at git repository \`${gitRepo.join("/")}\` in \`${fancyTime(Date.now() - nt)}s\`.`, true, true)
+            log("INFO", `Last commit for \`${gitRepo.join("/")}\` was \`${currentState}\``, false, true)
+
+            log("SUCCESS", `Done in \`${fancyTime(Date.now() - nt)}s\`.`, true, true)
+          } else return log("WARN", `Something might've gone wrong.\n` + o, false, true)
+        })
       }
     });
 
