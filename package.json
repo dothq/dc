@@ -1,6 +1,6 @@
 {
   "name": "tiggy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Building toolchain for Dot Firefox",
   "main": "bin/tig.js",
   "repository": "https://github.com/dothq/tig.git",
