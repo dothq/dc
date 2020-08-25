@@ -9,6 +9,11 @@ npm i @dothq/build -g
 yarn global add @dothq/build
 ```
 
+### Requirements
+
+* **g++**
+* **Node** - https://nodejs.org/
+
 ### Usage
 
 ```bash
