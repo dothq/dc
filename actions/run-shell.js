@@ -4,7 +4,7 @@ const runShell = (cmd) => {
     return new Promise((resolve, reject) => {
       exec(cmd, (error, stdout, stderr) => {
         if (error) {
-          if(error.includes("Permission denied")) return console.log("Try running the command as root or as Administrator.")
+          if(error.message.includes("Permission denied")) return console.log(`Error when running \`${cmd}\`: Try running \`dot\` as root or as Administrator.`)
           console.error(error);
         }
   
