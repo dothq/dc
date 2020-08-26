@@ -16,12 +16,12 @@
         },
         "patch": {
             "tag": ["dot", "dotbrowser", "dothq", "db"],
-            "name": "Dot Browser Stable",
-            "http": "https://hg.mozilla.org/venkman",
+            "name": "Dot Test",
+            "http": "https://github.com/dothq/dottest",
             "repository": {
-                "branch": "default"
+                "branch": "master"
             },
-            "type": "mercurial"
+            "type": "git"
         }
     },
     "flags": [

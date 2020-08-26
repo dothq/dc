@@ -23,6 +23,7 @@
     "get-stream": "^6.0.0",
     "hg": "^0.3.3",
     "isomorphic-git": "^1.7.4",
+    "merge-dirs": "^0.2.1",
     "progress": "^2.0.3",
     "rimraf": "^3.0.2"
   }
