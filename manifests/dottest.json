@@ -19,7 +19,7 @@
             "name": "Dot Browser Stable",
             "http": "https://hg.mozilla.org/venkman",
             "repository": {
-                "branch": "main"
+                "branch": "default"
             },
             "type": "mercurial"
         }
