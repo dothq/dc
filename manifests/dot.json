@@ -3,6 +3,7 @@
     "author": "Dot HQ",
     "id": "co.dothq.browser",
     "builder": "mach",
+    "requires": ["hg", "git"],
     "targets": {
         "base": {
             "tag": ["ff", "firefox", "moz", "mozilla"],

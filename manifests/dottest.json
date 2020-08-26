@@ -3,6 +3,7 @@
     "author": "Dot HQ",
     "id": "co.dothq.browsertest",
     "builder": "mach",
+    "requires": ["hg", "git"],
     "targets": {
         "base": {
             "tag": ["venkman"],
@@ -16,11 +17,11 @@
         "patch": {
             "tag": ["dot", "dotbrowser", "dothq", "db"],
             "name": "Dot Browser Stable",
-            "http": "https://github.com/dothq/browser",
+            "http": "https://hg.mozilla.org/venkman",
             "repository": {
                 "branch": "main"
             },
-            "type": "git"
+            "type": "mercurial"
         }
     },
     "flags": [
