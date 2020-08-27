@@ -1,5 +1,5 @@
 # dot
-dot is a tooling and building cli for dot browser
+dot is version control manager if you work with multiple version control systems
 
 ### Install
 
@@ -11,11 +11,21 @@ yarn global add @dothq/build
 
 ### Requirements
 
-* **g++**
 * **Node** - https://nodejs.org/
 
 ### Usage
 
+#### Help
 ```bash
 dot help
+```
+
+#### Downloading and running a build script
+```bash
+dot get <manifest-name>
+```
+
+#### Seeing all available build scripts
+```bash
+dot tags
 ```
